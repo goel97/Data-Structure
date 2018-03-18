@@ -1,0 +1,48 @@
+void insert()
+{
+    int n;
+    
+    struct node* new_node = (struct node*) malloc(sizeof(struct node));
+    
+    printf("Enter ID:");
+    scanf("%d",&n);
+    
+    if(search_i(n)!=sentinel)
+    {
+        cout<<"Element Already Exists"<<endl;               //check for duplicacy in tree
+        return;
+    }
+    new_node->id=n;
+    new_node->colour='r';                                          //make a new node z(to be inserted) and mark its colour as red
+    new_node->left=sentinel;
+    new_node->right=sentinel;
+    
+    if(head==sentinel)  
+        head=new_node;                                             //initial case
+    else
+    {
+        struct node *y,*x;                                           // make 2 new nodes y and x and start x as root
+        y=NULL;
+        x=head;
+        while(x != sentinel)
+        {
+            y=x;                                            //traverse the tree if greater move right else move left 
+            if(new_node->id<x->id)
+                x=x->left;
+            else
+                x=x->right;
+        }
+        new_node->parent=y;                                            //do all required linkages for parent also
+        if(new_node->id<y->id)
+            y->left=new_node;
+        else
+            y->right=new_node;
+    }
+    new_node->left=sentinel;
+    new_node->right=sentinel;
+    new_node->colour='r';
+    rbtfixup(new_node);                                         //make sure the inserted one has colour red and call fix up
+    head->parent=sentinel;
+    printf("ID:%d Colour= %c\n\n",new_node->id,new_node->colour);
+    printf("Entry added!\n\n");
+}
